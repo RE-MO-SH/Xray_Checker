@@ -1,53 +1,51 @@
-Xray Tester – Advanced GUI with Speed Test & VPN Toggle
+# Xray Tester  
+**Advanced GUI Tool for V2ray Proxy Validation, Speed Testing & VPN Toggle**
 
-English | فارسی
-📖 Overview (English)
+---
 
-Xray Tester is a cross-platform GUI tool (built with Tkinter) for testing and managing VLESS proxy configurations. It supports:
+## 📖 English Documentation
 
-    Loading VLESS links directly or from subscription URLs (base64‑encoded).
+### Overview
 
-    Validating each config using xray.exe (test mode + real HTTP request) and measuring latency.
+**Xray Checker** is a cross‑platform GUI application built with Python and Tkinter. It helps you:
 
-    Performing download speed tests on valid configs (1 MB file by default).
+- Load VLESS configuration links from a local file or from subscription URLs (base64‑encoded).
+- Validate each configuration using `xray.exe` (test mode + real HTTP request) and measure latency.
+- Run download speed tests on valid configs (default: 1 MB file).
+- Fetch geolocation (city & country) of the server IP via multiple fallback services.
+- Sort results by ping or speed.
+- Apply the best config as a **System Proxy** (Windows) or as a **Local SOCKS5/HTTP Proxy** on `127.0.0.1:10808`.
+- Toggle VPN on/off with one click.
+- Copy any config to clipboard or generate a QR code.
 
-    Geolocation lookup (city & country) based on the server IP.
+The tool is **multi‑threaded** for high speed, **robust** against network errors (retries, rotating User‑Agents), and **user‑friendly** (progress bar, ETA, live log).
 
-    Sorting results by ping or speed.
+---
 
-    Applying the best configuration as a system proxy (Windows) or as a local SOCKS5/HTTP proxy on 127.0.0.1:10808.
+### Requirements & Dependencies
 
-    Toggling VPN on/off with one click.
+- **Python 3.7+** (tested on Windows; Linux/macOS may work with small adjustments).
+- **xray.exe** – download from [Xray‑core releases](https://github.com/XTLS/Xray-core/releases).
+- **Python packages** (install via `pip`):
 
-    Viewing, copying to clipboard, or generating a QR code for any config.
+  ```bash
+  pip install pillow qrcode
 
-The tool is designed to be fast (multi‑threaded), robust (handles 403 errors, retries, and multiple geolocation services), and user‑friendly (progress bar, ETA, live log).
-📦 Requirements & Dependencies
+    tkinter – normally bundled with Python.
 
-    Python 3.7+ (tested on Windows, but may work on Linux/macOS with adjustments).
+    Pillow – for image handling (icons, QR codes).
 
-    xray.exe – the Xray core binary (download from Xray‑core).
+    qrcode – optional; needed only for QR code generation.
 
-    Required Python libraries (install via pip if missing):
-    bash
+    Windows – the system‑proxy feature uses winreg and ctypes; it works only on Windows.
 
-    pip install pillow qrcode
-
-        tkinter – usually bundled with Python.
-
-        Pillow – for image handling (icon, QR code).
-
-        qrcode – optional, for QR code generation (skip if not needed).
-
-    Windows – the system‑proxy feature uses winreg and ctypes; only available on Windows.
-
-🚀 Installation & Setup
+Installation & Setup
 
     Clone or download this repository.
 
-    Place xray.exe in the same directory as the script, or specify its full path in the GUI.
+    Place xray.exe in the same directory as the script (or specify its full path later).
 
-    Install dependencies (if not already installed):
+    Install dependencies (if missing):
     bash
 
     pip install pillow qrcode
@@ -57,144 +55,155 @@ The tool is designed to be fast (multi‑threaded), robust (handles 403 errors, 
 
     python xray_tester.py
 
-    (If you use PyInstaller, you can compile to a standalone .exe.)
+    (You can also package it as a standalone .exe with PyInstaller.)
 
-🧭 How to Use
+How to Use
 
-    Input file – provide a .txt file containing:
+    Input file – a .txt file containing:
 
         VLESS links (one per line, starting with vless://), or
 
         Subscription URLs (starting with http:// or https://).
-        The tool will download all subscriptions, deduplicate, and save all fetched links.
+        The tool will download all subscriptions, remove duplicates, and save all fetched links.
 
-    Output file – where valid configs will be saved (default: sub_valid.txt).
+    Output file – where validated configs are saved (default: sub_valid.txt).
 
-    Valid Configs File (optional) – you can load an existing list of valid configs to re‑test (e.g., for speed tests).
+    Valid Configs File (optional) – load an existing list of valid configs for re‑testing (e.g., to run speed tests again).
 
     xray.exe Path – browse to the location of xray.exe.
 
     Threads – number of concurrent workers (default 100). Adjust based on your CPU and network.
 
-    Max Latency (ms) – reject configs with ping above this value (default 5000).
+    Max Latency (ms) – configs with ping above this value are rejected (default 5000).
 
-    Test URL – the HTTP endpoint used for latency checks (default: http://www.gstatic.com/generate_204).
+    Test URL – HTTP endpoint used for latency checks (default: http://www.gstatic.com/generate_204).
 
-    Speed Test File – the URL of a file to download for speed measurement (default: http://speedtest.tele2.net/1MB.zip).
+    Speed Test File – URL of a file to download for speed measurement (default: http://speedtest.tele2.net/1MB.zip).
 
     Checkboxes:
 
-        Enable Speed Test – after validation, run download speed tests on all valid configs.
+        Enable Speed Test – after validation, run speed tests on all valid configs.
 
         Auto‑apply VPN – automatically apply the best config as VPN after testing.
 
-        Sort by Speed – sort the results table by speed (else by ping).
+        Sort by Speed – sort results by speed (otherwise by ping).
 
     VPN Mode – choose between:
 
         System Proxy (Windows only) – sets the system proxy, routing all computer traffic.
 
-        Local Proxy (SOCKS5/HTTP) – runs a local proxy on 127.0.0.1:10808; you can configure browsers/apps manually.
+        Local Proxy (SOCKS5/HTTP) – runs a local proxy on 127.0.0.1:10808; you can manually configure browsers/apps.
 
-    Start – begins the validation process. If paused, the button changes to Resume.
+    Start – begins validation. If paused, the button changes to Resume.
 
-    Stop – pauses the current operation. You can resume later.
+    Stop – pauses the current operation; you can resume later.
 
-    Re‑test Valid Configs – runs speed tests and geolocation on already validated configs (from the valid file or from the previous run).
+    Re‑test Valid Configs – runs speed tests and geolocation on already validated configs (from the valid file or previous run).
 
     VPN ON/OFF – toggles VPN using the selected config (best or currently highlighted).
 
-    Results Table – double‑click any row to copy the full config to clipboard and show its QR code. Single‑click selects it for VPN.
+    Results Table – double‑click any row to copy the full config to clipboard and display its QR code. Single‑click selects it for VPN.
 
-⚙️ Features in Detail
+Workflow Explanation
 
-    Subscription download – handles HTTP 403 errors by rotating User‑Agents.
+    Reading Input
 
-    Deduplication – removes duplicate links automatically.
+        The tool reads the input file line by line.
 
-    Validation – for each config:
+        Lines starting with http:// or https:// are treated as subscription URLs; these are downloaded (base64‑decoded) to extract VLESS links.
 
-        Builds a temporary Xray JSON config.
+        All VLESS links are collected, deduplicated, and saved to an all_links_*.txt file.
 
-        Runs xray -test to check the config syntax.
+    Validation
 
-        Starts Xray in the background, connects via SOCKS5, and sends a test HTTP request.
+        For each VLESS link, a temporary JSON configuration is built for Xray.
 
-        Records latency if successful.
+        The tool runs xray -test to verify the config syntax.
 
-    Speed test – downloads a file (1 MB by default) through the proxy and calculates download speed in Mbps.
+        If successful, it launches Xray with that config on a free port, connects via SOCKS5, and sends an HTTP request to the test URL.
 
-    Geolocation – tries over 20 different IP‑geolocation services to fetch city and country. Caches results.
+        If the response is 200 or 204 within the allowed latency, the config is marked valid and saved to the output file.
 
-    VPN Toggle – starts/stops Xray with the selected config. In system‑proxy mode, it modifies Windows proxy settings automatically.
+    Speed Testing (if enabled)
 
-    QR Code – generates a QR code from any config (requires qrcode and Pillow).
+        Each valid config is started again, and a file download is performed through the proxy.
 
-    Progress & ETA – real‑time progress bar, percentage, and estimated remaining time.
+        Download speed is calculated in Mbps.
 
-🛠 Troubleshooting
+        Geolocation is fetched by resolving the server hostname and querying multiple IP‑geo services (with caching).
 
-    xray.exe not found – ensure the path is correct, or place xray.exe in the same folder as the script.
+    Results Display
 
-    403 errors when downloading subscriptions – the tool will retry with different User‑Agents; if it still fails, check the subscription URL.
+        Valid configs are shown in a table with columns: row number, ping, speed, and location.
 
-    VPN not working – make sure the config is valid and Xray can start. Check the log for errors.
+        The table can be sorted by speed or ping.
 
-    Geolocation shows "Unknown" – the tool tries many services, but if all fail, it defaults to "Unknown". You can manually check the IP.
+    VPN Application
+
+        The user can select any row (or let the tool pick the best) and click Apply VPN.
+
+        Xray runs in the background with that config, and the chosen proxy mode is activated (system proxy or local SOCKS/HTTP).
+
+        The VPN ON/OFF button toggles the service.
+
+Troubleshooting
+
+    xray.exe not found – verify the path or place it in the script folder.
+
+    403 errors when downloading subscriptions – the tool retries with different User‑Agents; if it still fails, check the subscription URL.
+
+    VPN not working – ensure the config is valid and Xray can start; read the log for errors.
+
+    Geolocation shows "Unknown" – the tool tries many services, but if all fail, it falls back to "Unknown". You can manually check the IP.
 
     QR code not generated – install qrcode and Pillow (pip install qrcode pillow).
 
-📜 License
+License
 
-This project is open‑source and available under the MIT License. Feel free to modify and distribute.
+This project is open‑source and released under the MIT License. Feel free to modify and distribute.
 <hr dir="rtl">
-<div dir="rtl">خوانش (فارسی)</div>
+<div dir="rtl">راهنمای فارسی</div>
 <div dir="rtl">
-📖 نمای کلی
+نمای کلی
 
-Xray Tester یک ابزار گرافیکی (ساخته‌شده با Tkinter) برای تست و مدیریت تنظیمات پروکسی VLESS است. قابلیت‌های کلیدی:
+نرم‌افزار Xray Checker یک برنامهٔ گرافیکی (ساخته‌شده با Python و Tkinter) است که به شما کمک می‌کند:
 
-    بارگذاری لینک‌های VLESS به‌طور مستقیم یا از طریق آدرس‌های اشتراک (کدگذاری base64).
+    لینک‌های تنظیمات VLESS را از یک فایل محلی یا از آدرس‌های اشتراک (کدگذاری base64) بارگذاری کنید.
 
-    اعتبارسنجی هر تنظیمات با استفاده از xray.exe (حالت تست + درخواست HTTP واقعی) و اندازه‌گیری تأخیر.
+    هر تنظیمات را با استفاده از xray.exe (حالت تست + درخواست HTTP واقعی) اعتبارسنجی کرده و تأخیر را اندازه‌گیری کنید.
 
-    انجام تست سرعت دانلود بر روی تنظیمات معتبر (فایل ۱ مگابایتی به‌طور پیش‌فرض).
+    تست سرعت دانلود بر روی تنظیمات معتبر اجرا کنید (فایل ۱ مگابایتی به‌طور پیش‌فرض).
 
-    تشخیص موقعیت جغرافیایی (شهر و کشور) بر اساس IP سرور.
+    موقعیت جغرافیایی (شهر و کشور) سرور را با استفاده از چندین سرویس پشتیبان دریافت کنید.
 
-    مرتب‌سازی نتایج بر اساس پینگ یا سرعت.
+    نتایج را بر اساس پینگ یا سرعت مرتب کنید.
 
-    اعمال بهترین تنظیمات به‌عنوان پروکسی سیستمی (ویندوز) یا پروکسی محلی SOCKS5/HTTP روی 127.0.0.1:10808.
+    بهترین تنظیمات را به‌عنوان پروکسی سیستمی (ویندوز) یا پروکسی محلی SOCKS5/HTTP روی پورت 10808 اعمال کنید.
 
-    روشن/خاموش کردن VPN با یک کلیک.
+    وضعیت VPN را با یک کلیک روشن/خاموش کنید.
 
-    مشاهده، کپی در کلیپ‌بورد یا تولید کد QR برای هر تنظیمات.
+    هر تنظیمات را در کلیپ‌بورد کپی کنید یا کد QR آن را تولید کنید.
 
-این ابزار سریع (چند‌نخی)، مقاوم (مدیریت خطاهای ۴۰۳، تلاش مجدد و استفاده از چندین سرویس موقعیت‌یابی) و کاربرپسند (نوار پیشرفت، زمان باقیمانده و لاگ زنده) است.
-📦 پیش‌نیازها و کتابخانه‌ها
+این ابزار چند‌نخی (برای سرعت بالا)، مقاوم (در برابر خطاهای شبکه با تلاش مجدد و تغییر User‑Agent) و کاربرپسند (نوار پیشرفت، زمان باقیمانده و لاگ زنده) است.
+پیش‌نیازها و کتابخانه‌ها
 
-    Python 3.7+ (تست شده روی ویندوز، اما احتمالاً روی لینوکس/مک نیز قابل اجراست).
+    Python 3.7+ (تست شده روی ویندوز؛ لینوکس/مک نیز با تغییرات جزئی قابل اجراست).
 
-    xray.exe – فایل اجرایی Xray (از Xray‑core دانلود کنید).
+    فایل xray.exe – از صفحهٔ انتشارات Xray‑core دانلود کنید.
 
-    کتابخانه‌های Python (در صورت نیاز نصب کنید):
+    کتابخانه‌های Python (با pip نصب کنید):
     bash
 
     pip install pillow qrcode
 
-        tkinter – معمولاً همراه با Python نصب می‌شود.
-
-        Pillow – برای پردازش تصویر (آیکون، کد QR).
-
-        qrcode – اختیاری، برای تولید کد QR (در صورت نیاز نصب کنید).
 
     ویندوز – ویژگی پروکسی سیستمی از winreg و ctypes استفاده می‌کند و فقط روی ویندوز کار می‌کند.
 
-🚀 نصب و راه‌اندازی
+نصب و راه‌اندازی
 
     مخزن را کلون یا دانلود کنید.
 
-    فایل xray.exe را در همان پوشه اسکریپت قرار دهید، یا مسیر آن را در رابط کاربری مشخص کنید.
+    فایل xray.exe را در همان پوشهٔ اسکریپت قرار دهید (یا بعداً مسیر کامل آن را مشخص کنید).
 
     کتابخانه‌های مورد نیاز را نصب کنید (در صورت عدم نصب):
     bash
@@ -206,20 +215,20 @@ Xray Tester یک ابزار گرافیکی (ساخته‌شده با Tkinter) ب
 
     python xray_tester.py
 
-    (اگر از PyInstaller استفاده می‌کنید، می‌توانید یک فایل .exe مستقل بسازید.)
+    (همچنین می‌توانید با PyInstaller یک فایل .exe مستقل بسازید.)
 
-🧭 نحوه استفاده
+نحوهٔ استفاده
 
     فایل ورودی – یک فایل .txt شامل:
 
-        لینک‌های VLESS (هر خط یک لینک، با شروع vless://)، یا
+        لینک‌های VLESS (هر خط یک لینک با شروع vless://)، یا
 
         آدرس‌های اشتراک (شروع با http:// یا https://).
-        ابزار تمام اشتراک‌ها را دانلود، تکراری‌ها را حذف و همه لینک‌ها را ذخیره می‌کند.
+        ابزار تمام اشتراک‌ها را دانلود، تکراری‌ها را حذف و همهٔ لینک‌های دریافت‌شده را ذخیره می‌کند.
 
-    فایل خروجی – محل ذخیره تنظیمات معتبر (پیش‌فرض: sub_valid.txt).
+    فایل خروجی – محل ذخیرهٔ تنظیمات معتبر (پیش‌فرض: sub_valid.txt).
 
-    فایل تنظیمات معتبر (اختیاری) – می‌توانید لیست موجودی از تنظیمات معتبر را برای تست مجدد بارگذاری کنید (مثلاً برای تست سرعت).
+    فایل تنظیمات معتبر (اختیاری) – می‌توانید لیست موجودی از تنظیمات معتبر را برای تست مجدد بارگذاری کنید (مثلاً برای اجرای مجدد تست سرعت).
 
     مسیر xray.exe – مسیر فایل xray.exe را انتخاب کنید.
 
@@ -233,7 +242,7 @@ Xray Tester یک ابزار گرافیکی (ساخته‌شده با Tkinter) ب
 
     چک‌باکس‌ها:
 
-        فعال‌سازی تست سرعت – پس از اعتبارسنجی، تست سرعت روی همه تنظیمات معتبر انجام شود.
+        فعال‌سازی تست سرعت – پس از اعتبارسنجی، تست سرعت روی همهٔ تنظیمات معتبر اجرا شود.
 
         اعمال خودکار VPN – پس از تست، بهترین تنظیمات به‌عنوان VPN اعمال شود.
 
@@ -247,45 +256,61 @@ Xray Tester یک ابزار گرافیکی (ساخته‌شده با Tkinter) ب
 
     شروع – فرآیند اعتبارسنجی را آغاز می‌کند. در حالت مکث، دکمه به ادامه تغییر می‌کند.
 
-    توقف – عملیات فعلی را متوقف می‌کند. بعداً می‌توانید ادامه دهید.
+    توقف – عملیات فعلی را متوقف می‌کند؛ بعداً می‌توانید ادامه دهید.
 
-    تست مجدد تنظیمات معتبر – تست سرعت و موقعیت‌یابی روی تنظیمات معتبر (از فایل معتبر یا اجرای قبلی) انجام می‌دهد.
+    تست مجدد تنظیمات معتبر – تست سرعت و موقعیت‌یابی روی تنظیمات معتبر (از فایل معتبر یا اجرای قبلی) اجرا می‌شود.
 
-    VPN روشن/خاموش – VPN را با استفاده از تنظیمات انتخاب‌شده (بهترین یا هایلایت‌شده) روشن/خاموش می‌کند.
+    تنظیم VPN روشن/خاموش – VPN را با استفاده از تنظیمات انتخاب‌شده (بهترین یا هایلایت‌شده) روشن/خاموش می‌کند.
 
     جدول نتایج – با دوبار کلیک روی هر سطر، لینک کامل در کلیپ‌بورد کپی شده و کد QR آن نمایش داده می‌شود. با یک کلیک، آن تنظیمات برای VPN انتخاب می‌شود.
 
-⚙️ جزئیات قابلیت‌ها
+شرح روند کار
 
-    دانلود اشتراک – با چرخش User‑Agent خطاهای ۴۰۳ را مدیریت می‌کند.
+    خواندن ورودی
 
-    حذف تکراری‌ها – به‌طور خودکار لینک‌های تکراری را حذف می‌کند.
+        ابزار فایل ورودی را خط به خط می‌خواند.
 
-    اعتبارسنجی – برای هر تنظیمات:
+        خطوطی که با http:// یا https:// شروع می‌شوند به‌عنوان آدرس اشتراک در نظر گرفته شده، دانلود شده (base64‑decoded) و لینک‌های VLESS استخراج می‌شوند.
 
-        یک فایل JSON موقت برای Xray می‌سازد.
+        همهٔ لینک‌های VLESS جمع‌آوری، تکراری‌ها حذف و در فایل all_links_*.txt ذخیره می‌شوند.
 
-        xray -test را اجرا کرده و صحت تنظیمات را بررسی می‌کند.
+    اعتبارسنجی
 
-        Xray را در پس‌زمینه اجرا کرده، از طریق SOCKS5 متصل شده و یک درخواست HTTP تست ارسال می‌کند.
+        برای هر لینک VLESS، یک فایل JSON موقت برای Xray ساخته می‌شود.
 
-        در صورت موفقیت، تأخیر را ثبت می‌کند.
+        ابزار xray -test را اجرا کرده و صحت تنظیمات را بررسی می‌کند.
 
-    تست سرعت – یک فایل (۱ مگابایت پیش‌فرض) را از طریق پروکسی دانلود کرده و سرعت دانلود را بر حسب مگابیت بر ثانیه محاسبه می‌کند.
+        در صورت موفقیت، Xray را با آن تنظیمات روی یک پورت آزاد اجرا کرده، از طریق SOCKS5 متصل شده و یک درخواست HTTP به آدرس تست ارسال می‌کند.
 
-    موقعیت‌یابی – بیش از ۲۰ سرویس موقعیت‌یابی IP را امتحان کرده و شهر و کشور را استخراج می‌کند. نتایج کش می‌شوند.
+        اگر پاسخ 200 یا 204 در بازهٔ تأخیر مجاز دریافت شود، آن تنظیمات معتبر محسوب شده و در فایل خروجی ذخیره می‌شود.
 
-    کلید VPN – Xray را با تنظیمات انتخاب‌شده شروع/متوقف می‌کند. در حالت پروکسی سیستمی، تنظیمات پروکسی ویندوز را به‌طور خودکار تغییر می‌دهد.
+    تست سرعت (در صورت فعال بودن)
 
-    کد QR – از هر تنظیمات یک کد QR تولید می‌کند (نیازمند qrcode و Pillow).
+        هر تنظیمات معتبر دوباره اجرا شده و یک فایل از طریق پروکسی دانلود می‌شود.
 
-    نوار پیشرفت و زمان باقیمانده – نمایش زنده درصد پیشرفت و زمان تخمینی باقیمانده.
+        سرعت دانلود بر حسب مگابیت بر ثانیه محاسبه می‌شود.
 
-🛠 عیب‌یابی
+        موقعیت‌یابی با حل کردن نام سرور و پرسش از چندین سرویس موقعیت‌یابی IP (با کش کردن نتایج) انجام می‌شود.
 
-    xray.exe پیدا نشد – مسیر را بررسی کنید یا xray.exe را در پوشه اسکریپت قرار دهید.
+    نمایش نتایج
 
-    خطای ۴۰۳ در دانلود اشتراک – ابزار با User‑Agentهای مختلف تلاش مجدد می‌کند؛ در صورت ادامه خطا، آدرس اشتراک را بررسی کنید.
+        تنظیمات معتبر در جدولی با ستون‌های: شماره سطر، پینگ، سرعت و موقعیت نمایش داده می‌شوند.
+
+        جدول قابل مرتب‌سازی بر اساس سرعت یا پینگ است.
+
+    اعمال VPN
+
+        کاربر می‌تواند هر سطر را انتخاب کند (یا اجازه دهد ابزار بهترین را انتخاب کند) و روی اعمال VPN کلیک کند.
+
+        Xray در پس‌زمینه با آن تنظیمات اجرا شده و حالت پروکسی انتخاب‌شده (سیستمی یا محلی) فعال می‌شود.
+
+        دکمهٔ VPN روشن/خاموش این سرویس را قطع/وصل می‌کند.
+
+عیب‌یابی
+
+    xray.exe پیدا نشد – مسیر را بررسی کنید یا فایل را در پوشهٔ اسکریپت قرار دهید.
+
+    خطای ۴۰۳ در دانلود اشتراک – ابزار با User‑Agentهای مختلف تلاش مجدد می‌کند؛ در صورت ادامهٔ خطا، آدرس اشتراک را بررسی کنید.
 
     VPN کار نمی‌کند – مطمئن شوید تنظیمات معتبر است و Xray می‌تواند اجرا شود. لاگ را برای خطاها بررسی کنید.
 
@@ -293,8 +318,7 @@ Xray Tester یک ابزار گرافیکی (ساخته‌شده با Tkinter) ب
 
     کد QR تولید نمی‌شود – کتابخانه‌های qrcode و Pillow را نصب کنید (pip install qrcode pillow).
 
-📜 مجوز
+مجوز
 
 این پروژه متن‌باز بوده و تحت مجوز MIT منتشر می‌شود. می‌توانید آزادانه آن را تغییر داده و توزیع کنید.
-</div>
-This response is AI-generated, for reference only.
+</div> ```
