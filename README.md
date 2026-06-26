@@ -147,7 +147,9 @@ The tool is designed to be fast (multi‑threaded), robust (handles 403 errors, 
 📜 License
 
 This project is open‑source and available under the MIT License. Feel free to modify and distribute.
-خوانش (فارسی)
+<hr dir="rtl">
+<div dir="rtl">خوانش (فارسی)</div>
+<div dir="rtl">
 📖 نمای کلی
 
 Xray Tester یک ابزار گرافیکی (ساخته‌شده با Tkinter) برای تست و مدیریت تنظیمات پروکسی VLESS است. قابلیت‌های کلیدی:
@@ -294,3 +296,5 @@ Xray Tester یک ابزار گرافیکی (ساخته‌شده با Tkinter) ب
 📜 مجوز
 
 این پروژه متن‌باز بوده و تحت مجوز MIT منتشر می‌شود. می‌توانید آزادانه آن را تغییر داده و توزیع کنید.
+</div>
+This response is AI-generated, for reference only.
