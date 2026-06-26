@@ -1,4 +1,4 @@
-# Xray Tester  
+# Xray Checker  
 **Advanced GUI Tool for V2ray Proxy Validation, Speed Testing & VPN Toggle**
 
 ---
